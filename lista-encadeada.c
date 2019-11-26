@@ -12,7 +12,7 @@
 
 struct node {
     struct node *next;
-    int item;
+    int *item;
 };
 
 typedef struct node node;
@@ -25,7 +25,7 @@ node* remove_node (node *head, void* item, int(*compare_function)(void*, void*))
     // A lógica por trás de remover um nó da lista é: Eu salvo o endereço do nó que eu quero remover, e salvo o endereço q ele apontava (em duas variaveis diferentes), ai eu digo, que o nó que vem antes do que eu quero excluir agora aponta para onde o que eu quero excluir apontava, e dou um free() no que eu quero excluir;
     node *previous = NULL; // Eu devo salvar o nó anterior ao que eu quero apagar no previous;
     node *current = head; // Eu devo salvar o nó que eu quero apagar no current;
-    while (current != NULL && !((*compare_function)(current->item, item))) { // Enquando current for diferente de NULL (ou seja, eu estiver nos limites da lista) e o item salvo no nó atual for diferente do item cujo nó desejo apagar (ou seja, se eu achar o nó que possui o item que eu desejo apagar eu paro);
+    while (current != NULL && (!((*compare_function)(current->item, item)))) { // Enquando current for diferente de NULL (ou seja, eu estiver nos limites da lista) e o item salvo no nó atual for diferente do item cujo nó desejo apagar (ou seja, se eu achar o nó que possui o item que eu desejo apagar eu paro);
         previous = current; // O meu anterior vai ser o meu atual;
         current = current->next; // Vou para o próximo;
     }
@@ -54,9 +54,10 @@ node* search (node *head, void* item, int(*compare_function)(void*, void*)) { //
 
 void print_list(node *head) { // Printa os elementos da lista;
     while (head != NULL) { // Enquanto o meu ponteiro nao for nulo(final da lista);
-        printf ("%d\n", *((int*) head->item)); // Printo o valor;
+        printf ("%d ", *((int*) head->item)); // Printo o valor;
         head = head->next; // Vou para o proximo;
     }
+    printf("\n");
 }
 
 node* add(node* head, void* item) { // Adiciona um novo nó à lista encadeada;
@@ -98,11 +99,13 @@ int main () {
     else printf ("A lista nao esta vazia\n");
 
     print_list(list);
-    for (i = 0; i <= 8; i++) {
-        aux = search (list, &i, int_compare);
-        if (aux ==  NULL) printf ("O numero %d nao esta na lista\n", i);
-        else printf ("O numero %d esta na lista\n", i);
-    }
+    
+    /* i = 0;
+    
+    aux = search (list, &i, int_compare);
+    if (aux ==  NULL) printf ("O numero %d nao esta na lista\n", i);
+    else printf ("O numero %d esta na lista\n", i);
+    
     free(aux);
 
     printf ("Lista antes de apagar alguns elementos: ");
@@ -111,14 +114,14 @@ int main () {
     i = 2;
     remove_node(list, &i, int_compare); // Removendo o primeiro item da lista;
     print_list(list);
-
+ 
     i = 4;
     remove_node(list, &i, int_compare); // Tentando remover um item que nao esta na lista;
     print_list(list);
 
     i = 5;
     remove_node(list, &i, int_compare); // Removendo um item qualquer da lista;
-    print_list(list);
+    print_list(list); */
 
     return 0;
 }
