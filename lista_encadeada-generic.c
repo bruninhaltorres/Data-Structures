@@ -43,11 +43,12 @@ node* remove_node (node *head, void* item, int(*compare_function)(void*, void*))
 
 node* search (node *head, void* item, int(*compare_function)(void*, void*)) { // Procura um elemento na lista;
     // Como eu desejo criar uma funcao generica e para isso uso ponteiro para void, faz-se necessario usar alguma outra forma de comparação ao invés de simplesmente (head->item == item), logo, uma das alternativas e utilizar ponteiro para função, essa função irá dar qual o parametro de comparação de dois elementos.
-    while (head != NULL) { // Enquanto o meu ponteiro head nao for nulo;
-        if ((*compare_function)(head->item, item)) { // Se o retorno da minha funcao de comparacao for 1 (ou seja, oq e quero e igual a oq eu tenho);
-            return head; //retorno o endereço do item;
+    node *aux = head;
+    while (aux != NULL) { // Enquanto o meu ponteiro aux nao for nulo;
+        if ((*compare_function)(aux->item, item)) { // Se o retorno da minha funcao de comparacao for 1 (ou seja, oq e quero e igual a oq eu tenho);
+            return aux; //retorno o endereço do item;
         }
-        head = head->next; // Se não, eu vou pro próximo;
+        aux = aux->next; // Se não, eu vou pro próximo;
     }
     return NULL; // Se eu cheguei no final da lista e não achei, retorno NULL;
 }

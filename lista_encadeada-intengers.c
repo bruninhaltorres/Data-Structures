@@ -98,8 +98,8 @@ int main () {
     else printf ("O numero 0 esta na lista\n");
     if (aux2 ==  NULL) printf ("O numero 1 nao esta na lista\n");
     else printf ("O numero 1 esta na lista\n");
-    free(aux1);
-    free(aux2);
+    /* free(aux1);
+    free(aux2); */
     DEBUG print_list(list);
 
     remove_node(list, 2); // Removendo o primeiro item da lista;
