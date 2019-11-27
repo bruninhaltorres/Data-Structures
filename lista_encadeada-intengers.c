@@ -9,7 +9,6 @@
 ° Cada um desses "elementos" da lista encadeada recebe o nome de nó. Uma lista encadeada acaba no nó que apontar para um ponteiro nulo (nó == NULL). O inicio da lista recebe o nome de "head".
 ° Além de não precisar de espaços contiguos de memória, para a inserção de um novo nó custa apenas O(1), em contrapartida, acessar um elemento da lista custa O(n), pois devemos percorrer a lista linearmente até achar o que queremos.
 ° Ao adicionarmos um novo nó na lista, ao invés de adicionarmos no final (como normalmente e feito no array), adicionamos no inicio, este novo nó sera agora a cabeça da minha lista.
-° EXTRA: Para criar funcoes genericas, devemos usar ponteiros para void (Ponteiros para void são variaveis q recebem qualquer tipo (char, float, int, etc...), diferente de um ponteiro para int que receberia apenas inteiros).
  */
 
 struct node {
@@ -35,15 +34,14 @@ node* remove_node (node *head, int item) { // Remove um nó da lista;
     } else { // Se não, é um nó em qualquer outra posição da lista;
         previous->next = current->next; // O nó anterior ao que eu quero apagar agora aponta para onde o nó que eu quero apagar aponta;
     }
-    free(current); // Apago o nsó que eu quero;
+    free(current); // Apago o nó que eu quero;
     return head; // Retorno a nova lista;
 }
 
 node* search (node *head, int item) { // Procura um elemento na lista;
-    // Como eu desejo criar uma funcao generica e para isso uso ponteiro para void, faz-se necessario usar alguma outra forma de comparação ao invés de simplesmente (head->item == item), logo, uma das alternativas e utilizar ponteiro para função, essa função irá dar qual o parametro de comparação de dois elementos.
     node *aux = head;
     while (aux != NULL) { // Enquanto o meu ponteiro head nao for nulo;
-        if (aux->item == item) { // Se o retorno da minha funcao de comparacao for 1 (ou seja, oq e quero e igual a oq eu tenho);
+        if (aux->item == item) { // Achei! :)
             return aux; //retorno o endereço do item;
         }
         aux = aux->next; // Se não, eu vou pro próximo;
