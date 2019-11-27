@@ -35,17 +35,18 @@ node* remove_node (node *head, int item) { // Remove um nó da lista;
     } else { // Se não, é um nó em qualquer outra posição da lista;
         previous->next = current->next; // O nó anterior ao que eu quero apagar agora aponta para onde o nó que eu quero apagar aponta;
     }
-    free(current); // Apago o nó que eu quero;
+    free(current); // Apago o nsó que eu quero;
     return head; // Retorno a nova lista;
 }
 
 node* search (node *head, int item) { // Procura um elemento na lista;
     // Como eu desejo criar uma funcao generica e para isso uso ponteiro para void, faz-se necessario usar alguma outra forma de comparação ao invés de simplesmente (head->item == item), logo, uma das alternativas e utilizar ponteiro para função, essa função irá dar qual o parametro de comparação de dois elementos.
-    while (head != NULL) { // Enquanto o meu ponteiro head nao for nulo;
-        if (head->item == item) { // Se o retorno da minha funcao de comparacao for 1 (ou seja, oq e quero e igual a oq eu tenho);
-            return head; //retorno o endereço do item;
+    node *aux = head;
+    while (aux != NULL) { // Enquanto o meu ponteiro head nao for nulo;
+        if (aux->item == item) { // Se o retorno da minha funcao de comparacao for 1 (ou seja, oq e quero e igual a oq eu tenho);
+            return aux; //retorno o endereço do item;
         }
-        head = head->next; // Se não, eu vou pro próximo;
+        aux = aux->next; // Se não, eu vou pro próximo;
     }
     return NULL; // Se eu cheguei no final da lista e não achei, retorno NULL;
 }
