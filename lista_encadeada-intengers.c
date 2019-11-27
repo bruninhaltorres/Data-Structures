@@ -38,7 +38,7 @@ node* remove_node (node *head, int item) { // Remove um nó da lista;
         previous = current;
         current = current->next;
     }
-    return NULL;
+    return head;
 }
 
 node* search (node *head, int item) { // Procura um elemento na lista;
@@ -106,15 +106,15 @@ int main () {
     DEBUG print_list(list);
 
     DEBUG printf ("Apagando o 2:\n");
-    remove_node(list, 2); // Removendo o primeiro item da lista;
+    list = remove_node(list, 2); // Removendo o primeiro item da lista;
     print_list(list);
 
     DEBUG printf ("Apagando o 4\n");
-    remove_node(list, 4); // Tentando remover um item que nao esta na lista;
+    list = remove_node(list, 4); // Tentando remover um item que nao esta na lista;
     print_list(list);
 
     DEBUG printf ("Apagando o 5\n");
-    remove_node(list, 5); // Removendo um item qualquer da lista;
+    list = remove_node(list, 5); // Removendo um item qualquer da lista;
     print_list(list);
 
     return 0;

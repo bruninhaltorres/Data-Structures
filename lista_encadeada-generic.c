@@ -23,22 +23,27 @@ int int_compare (void* a, void* b) { // Funcao de comparacao de 2 inteiros;
 
 node* remove_node (node *head, void* item, int(*compare_function)(void*, void*)) { // Remove um nó da lista;
     // A lógica por trás de remover um nó da lista é: Eu salvo o endereço do nó que eu quero remover, e salvo o endereço q ele apontava (em duas variaveis diferentes), ai eu digo, que o nó que vem antes do que eu quero excluir agora aponta para onde o que eu quero excluir apontava, e dou um free() no que eu quero excluir;
-    node *previous = NULL; // Eu devo salvar o nó anterior ao que eu quero apagar no previous;
-    node *current = head; // Eu devo salvar o nó que eu quero apagar no current;
-    while (current != NULL && (!((*compare_function)(current->item, item)))) { // Enquando current for diferente de NULL (ou seja, eu estiver nos limites da lista) e o item salvo no nó atual for diferente do item cujo nó desejo apagar (ou seja, se eu achar o nó que possui o item que eu desejo apagar eu paro);
-        previous = current; // O meu anterior vai ser o meu atual;
-        current = current->next; // Vou para o próximo;
+    node* remove_node (node *head, int item) { // Remove um nó da lista;
+    node *previous = NULL;
+    node *current = head;
+    while (current != NULL) {
+        if (current->item == item) { // Achei! :)
+            if (previous == NULL) {
+                head = head->next;
+                free(current);
+                current = NULL;
+                return head;
+            } else {
+                previous->next = current->next;
+                free(current);
+                current = NULL;
+                return head;
+            }
+        }
+        previous = current;
+        current = current->next;
     }
-    if (current ==  NULL) { // Se eu cheguei ao final da lista, significa que eu nao achei o que queria apagar;
-        return head; // Retorno a lista;
-    }
-    if (previous == NULL) { // Se previous for NULL, significa que o nó que eu quero apagar é o primeiro nó da lista
-        head = current->next; // O inicio da lista agora aponta para onde o nó que eu quero apagar apontava;
-    } else { // Se não, é um nó em qualquer outra posição da lista;
-        previous->next = current->next; // O nó anterior ao que eu quero apagar agora aponta para onde o nó que eu quero apagar aponta;
-    }
-    free(current); // Apago o nó que eu quero;
-    return head; // Retorno a nova lista;
+    return head;
 }
 
 node* search (node *head, void* item, int(*compare_function)(void*, void*)) { // Procura um elemento na lista;
