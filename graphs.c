@@ -187,6 +187,12 @@ void DFS(GRAPH *graph, int source) {
     }
 }
 
+void reset (GRAPH *graph) {
+    for (int  i = 0; i < graph->graph_size; i++) {
+        graph->visited[i] = false;
+    }
+}
+
 int main() {
     int number_of_vertex, number_of_edges;
     scanf("%d", &number_of_vertex);
@@ -202,9 +208,7 @@ int main() {
     
     BFS(graph, 0);
     print_graph(graph);
-    for (int  i = 0; i < graph->graph_size; i++) {
-        graph->visited[i] = false;
-    }
+    reset (graph);
     DFS(graph, 0); 
     return 0;
 }
