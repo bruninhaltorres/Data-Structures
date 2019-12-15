@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 /* 
 ========= HASH TABLES =======
@@ -13,56 +14,168 @@
 ° Na solução linear, se ocorrer a colisão, os valores são salvos na proxima casa vazia. O problema disso é que as operações podem acabar ocorrendo em O(n).
 ° Na solução com listas, em cada posição do array há uma lista. Se ocorrer uma colisão, é adicionado mais um nó na lista daquela casa. O que com certeza é bem mais rapido.
 
-° Aqui tem com a solução linear pq e a que tem no slide;
+° Aqui tem com a solução listas;
  */
 
 #define HASH_SIZE 11
 
 typedef struct element element;
 typedef struct hash_table hash_table;
+typedef struct node node;
 
-struct element {
-    int key, value;
+struct node {
+    node* next;
+    int item;
+    int key;
 };
 
 struct hash_table {
-    element *table[HASH_SIZE]; // Pq um array de ponteiros e nao um array normal? Por questões de memoria!
+    node *table[HASH_SIZE]; // Pq um array de ponteiros e nao um array normal? Por questões de memoria!
 };
 
-/* FALTA IMPLEMENTAR:
-int get(hash_table *ht, int key); // Procura
-void remove(hash_table *ht, int key); // Remove
-int contains_key(hash_table *ht, int key); // ???????????
-void print_hash_table(hash_table *ht); // Printa
- */
-
-void put (hash_table *ht, int key, int value) { // Adiciona um novo valor na hash table;
-    int h = key % HASH_SIZE; // Esse aqui que e o meu calculo que diz qual vai ser a posição no array que eu vou adicionar o elemento  
-    while (ht->table[h] != NULL) {
-        if (ht->table[h]->key == key) {
-            ht->table[h]->value = value;
-            break;
-        }
-        h = (h + 1) % 11;
+// Verifica se ja foi adicionado um valor com aquela chave, retornando 1 se for encontrado e 0 caso contrario;
+int contains_key(hash_table *ht, int key) {
+    int h = key % HASH_SIZE;
+    node* aux = ht->table[h];
+    while (aux != NULL) {
+        if (aux->key == key) return 1; 
+        aux = aux->next;
     }
-    if (ht->table[h] == NULL) {
-        element *new_element = (element*) malloc(sizeof(element));
-        new_element->key = key;
-        new_element->value = value;
-        ht->table[h] = new_element;
+    return 0;
+}
+
+// Imprime uma lista encadeada;
+void print_linked_list (node* head) {
+    while (head != NULL) {
+        printf ("Chave: %d, Item: %d ", head->key, head->item);
+        head = head->next;
+    }
+    printf ("\n");
+}
+
+// Imprime uma hash table;
+void print_hash_table(hash_table *ht) {
+    for (int i = 0; i < HASH_SIZE; i++) {
+        printf("Posicao %d: ", i);
+        print_linked_list(ht->table[i]);
     }
 }
 
-hash_table* create_hash_table () { // Cria uma nova hash table;
+// Remove um valor na hash_table;
+void remove_value(hash_table *ht, int key){
+    int h = key % HASH_SIZE;
+    node* aux = ht->table[h];
+    node* previous = NULL;
+    while (aux != NULL) {
+        if (aux->key == key) {
+            if (previous == NULL) {
+                ht->table[h] = aux->next;
+            } else {
+                previous->next = aux->next;
+            }
+            free(aux);
+            aux = NULL;
+            return;
+        }
+        previous = aux;
+        aux = aux->next;
+    }
+}
+
+// Procura um valor na hash table
+int get(hash_table *ht, int key) {
+    int h = key % HASH_SIZE;
+    node* aux = ht->table[h];
+    while (aux != NULL) {
+        if (aux->key == key) {
+            return aux->item;
+        }
+        aux = aux->next;
+    }
+    return -1;
+}
+
+node* add_node(node* head, int item, int key) {
+    node* new_node = (node*) malloc(sizeof(node));
+    new_node ->next = head;
+    new_node->item = item;
+    new_node->key = key;
+    return new_node;
+}
+
+// Adiciona um novo valor na hash table;
+void put (hash_table *ht, int key, int value) {
+    int h = key % HASH_SIZE; // Esse aqui que e o meu calculo que diz qual vai ser a posição no array que eu vou adicionar o elemento  
+    ht->table[h] = add_node(ht->table[h], value, key);
+    return;
+}
+
+// Cria uma nova hash table;
+hash_table* create_hash_table () {
     hash_table *new_hash_table = (hash_table*) malloc (sizeof(hash_table)); // Aquela alocação de espaço na memoria que a gente ja ta acostumado
-    int i;
-    for (i = 0; i < HASH_SIZE; i++) { // Navego pelo array e faço cada elemento apontar para nulo;
+    for (int i = 0; i < HASH_SIZE; i++) { // Navego pelo array e faço cada elemento apontar para nulo;
         new_hash_table->table[i] = NULL;
     }
     return new_hash_table;
 }
 
 int main () {
-    hash_table *hash = create_hash_table();
+    char option;
+    int key;
+    printf ("Digite 'h' para iniciar a hash table, 's' para sair\n");
+    scanf ("%c", &option);
+    option = tolower(option);
+    hash_table *hash;
+    if (option == 'h') {
+        hash = create_hash_table();
+    }
 
+    while (option != 's') {
+        printf ("==========HASH TABLE==========\n");
+        printf ("Digite 'p' para adicionar um valor à hash table\n");
+        printf ("Digite 'g' para procurar um valor na hash table\n");
+        printf ("Digite 'r' para remover um valor da hash table\n");
+        printf ("Digite 'i' para imprimir a hash table\n");
+        printf ("Digite 's' para sair\n");
+        scanf ("%c", &option);
+        option = tolower(option);
+        
+        switch (option) {
+        case 'p':
+            printf ("Insira a chave:");
+            scanf ("%d", &key);
+            if (!(contains_key(hash, key))) {
+                printf ("Insira o valor:");
+                int x;
+                scanf ("%d", &x);
+                put(hash, key, x);
+            } else {
+                printf ("Chave já utilizada!\n");
+            }
+            break;
+        
+        case 'g':
+            printf ("Insira a chave:");
+            scanf ("%d", &key);
+            int x = get(hash, key);
+            if (x == -1) {
+                printf ("Não existe nenhum valor associado a essa chave\n");
+            } else {
+                printf ("O valor associado a essa chave é: %d\n", x);
+            }
+            break;
+        
+
+        case 'r':
+            printf ("Insira a chave:");
+            scanf ("%d", &key);
+            remove_value(hash, key);
+            break;
+
+        case 'i':
+            print_hash_table(hash);
+            break;
+        }
+    } 
+    return 0;
 }
