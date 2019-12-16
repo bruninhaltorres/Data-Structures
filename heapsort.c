@@ -61,7 +61,7 @@ void max_heapify(heap *heap, int i) {
 
 // Remove o maior (ou menor) item da heap;
 int dequeue (heap *heap) {
-    if (heap->size = 0) {
+    if (heap->size == 0) {
         printf ("Heap Underflow\n");
         return -1;
     } else {

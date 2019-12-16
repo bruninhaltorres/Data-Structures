@@ -60,17 +60,17 @@ void max_heapify(heap *heap, int i) {
 }
 
 // Remove o maior (ou menor se for uma min-heap) item da heap;
-int dequeue (heap **heap) {
-    printf ("AQUIIIII %d\n", (*heap)->size);
-    if ((*heap)->size = 0) {
+int dequeue (heap *heap) {
+    printf ("AQUIIIII %d\n", heap->size);
+    if (heap->size <= 0) {
         printf ("Heap Underflow\n");
         return -1;
     } else {
-        printf ("... %d\n", (*heap)->size);
-        int item = (*heap)->data[1];
-        (*heap)->data[1] = (*heap)->data[(*heap)->size];
-        (*heap)->size--;
-        max_heapify (*heap, 1);
+        printf ("... %d\n", heap->size);
+        int item = heap->data[1];
+        heap->data[1] = heap->data[heap->size];
+        heap->size--;
+        max_heapify (heap, 1);
         return item;
     }
 }
@@ -117,7 +117,7 @@ int main () {
 
     while (heap->size > 0) {
         printf ("aq %d\n", heap->size);
-        printf ("Desenfileirando o %d\n", dequeue(&heap));
+        printf ("Desenfileirando o %d\n", dequeue(heap));
     }
 
     return 0;
