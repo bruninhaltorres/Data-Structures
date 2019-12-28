@@ -95,7 +95,7 @@ void enqueue (heap *heap, int item) {
 }
 
 void heap_sort(heap *heap) {
-    for (int i = heap->size; i >= 2; i++) {
+    for (int i = heap->size; i <= 2; i--) {
         swap(&heap->data[1], &heap->data[i]); // Jogo o maior valor pro final do array;
         heap->size--; // Diminuo o tamanho da heap
         max_heapify(heap, 1); // Reordeno, colocando o maior novamente na primeira posicao
