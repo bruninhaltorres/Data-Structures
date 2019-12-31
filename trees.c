@@ -40,30 +40,45 @@ tree* search(tree* bt, int item) {
     search(bt->right, item);
 }
 
-
-tree* create_child(int item, tree* left, tree* right) { // Adicionar um novo no filho
-    tree* new_child = (tree*) malloc(sizeof(tree));
-    new_child->item = item;
-    new_child->left = left;
-    new_child->right = right;
-    return new_child;
+tree *create_tree (int item) {
+    tree *new_tree = (tree*) malloc(sizeof(tree));
+    new_tree->item = item;
+    new_tree->left = NULL;
+    new_tree->right = NULL;
+    return new_tree;
 }
 
-tree* create_empty_binary_tree() { // Cria uma nova arvore binaria;
-    return NULL;
+void insere (tree *tree, int pai, int esquerda, int direita) {
+    if (tree == NULL) {
+        return;
+    } else if (tree->item == pai) {
+        if (esquerda != -1) tree->left = create_tree(esquerda);
+        if (direita != -1) tree->right = create_tree(direita);
+        return;
+    }
+    insere(tree->left, pai, esquerda, direita);
+    insere(tree->right, pai, esquerda, direita);
 }
 
 int main () {
     tree* arvore = create_empty_binary_tree();
 }
 
-/* tree* search(tree* bt, int item) { // Procura um valor na arvore -- > ignora
-    // Funciona de forma semelhante à busca binaria;
-    if ((bt == NULL) || bt->item == item) { // Se eu nao achei ou achei;
-        return bt;
-    } else if (bt->item >  item) {
-        return search(bt->left, item);
-    } else {
-        return search(bt->right, item);
+int main () {
+    int n;
+    scanf ("%d", &n);
+    
+    int i;
+    int x, e, d;
+    scanf ("%d %d %d", &x, &e, &d);
+    tree *tree = create_tree(x);
+    tree->right = create_tree(d);
+    tree->left = create_tree(e);
+
+    for (i = 1; i < n; i++) {
+        scanf ("%d %d %d", &x, &e, &d);
+        insere (tree, x, e, d);
     }
-} */
+
+    return 0;
+}
